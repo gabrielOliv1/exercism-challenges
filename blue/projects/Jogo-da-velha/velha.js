@@ -66,7 +66,17 @@ function play(position) {
         break;
     }
 
-    updateBoard();
+    if (player == 1) {
+      updateBoard();
+      result = winner();
+
+      if (result != "") {
+        alert(`O vencedor é ${result}`);
+        playing = false;
+      }
+
+      cpuPlays();
+    }
   }
 }
 
@@ -85,6 +95,72 @@ function updateBoard() {
       }
     }
   }
+}
+
+function cpuPlays() {
+  if (playing) {
+    let line, column;
+
+    if (levelDifficulty == 1) {
+      do {
+        line = Math.round(Math.random() * 2);
+        column = Math.round(Math.random() * 2);
+
+        console.log(line);
+        console.log(column);
+      } while (gameBoard[line][column] != "");
+      gameBoard[line][column] = "O";
+    } else if (level == 2) {
+      // level 2
+    }
+    result = winner();
+
+    if (result != "") {
+      alert(`O vencedor é ${result}`);
+      playing = false;
+    }
+    player = 0;
+  }
+
+  updateBoard();
+}
+
+function winner() {
+  let line, column;
+
+  for (line = 0; line < gameBoard.length; line++) {
+    if (
+      gameBoard[line][0] == gameBoard[line][1] &&
+      gameBoard[line][1] == gameBoard[line][2]
+    ) {
+      return gameBoard[line][0];
+    }
+  }
+
+  for (column = 0; column < gameBoard.length; column++) {
+    if (
+      gameBoard[0][column] == gameBoard[1][column] &&
+      gameBoard[1][column] == gameBoard[2][column]
+    ) {
+      return gameBoard[0][column];
+    }
+  }
+
+  if (
+    gameBoard[0][0] == gameBoard[1][1] &&
+    gameBoard[1][1] == gameBoard[2][2]
+  ) {
+    return gameBoard[0][0];
+  }
+
+  if (
+    gameBoard[0][2] == gameBoard[1][1] &&
+    gameBoard[1][1] == gameBoard[2][0]
+  ) {
+    return gameBoard[0][2];
+  }
+
+  return "";
 }
 
 function initGame() {
